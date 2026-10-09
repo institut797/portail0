@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portail étudiant - Institut La Science Avant Tout (IST) 2026</title>
+<style>
+:root{--g:#1e5e35;--g2:#2f7d4a;--gl:#e8f3ec;--bd:#dfe6e1;--tx:#17231b;--mu:#5f6f64;--bg:#f4f7f5;--red:#b42318;--redl:#fde8e6;--amb:#8a5a00;--ambl:#fff4d6}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);font-size:15px;min-height:100vh;display:flex;flex-direction:column}
+header.top{background:linear-gradient(135deg,var(--g),var(--g2));color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand img{width:46px;height:46px;border-radius:50%;background:#fff;object-fit:cover;flex-shrink:0}
+.ttl{font-size:16px;font-weight:800;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sub{font-size:11px;opacity:.85;letter-spacing:1px;text-transform:uppercase}
+.hright{display:flex;align-items:center;gap:10px}
+.hname{font-size:13px;opacity:.95;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+button{padding:10px 16px;font-size:14px;font-weight:700;border:0;border-radius:10px;background:var(--g);color:#fff;cursor:pointer;font-family:inherit}
+button:hover{filter:brightness(1.06)}
+button:disabled{opacity:.55;cursor:default}
+button.ghost{background:transparent;color:var(--g);border:1px solid var(--g)}
+button.ghost:hover{background:var(--gl)}
+button.white{background:transparent;color:#fff;border:1px solid #fff;padding:7px 12px;font-size:13px}
+button.full{width:100%}
+button.sm{padding:7px 11px;font-size:12px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--bd);border-radius:10px;font-size:15px;background:#fff;color:var(--tx);font-family:inherit}
+textarea{min-height:90px;resize:vertical}
+label.l{display:block;font-size:12px;font-weight:700;color:var(--mu);margin:12px 0 5px;text-transform:uppercase;letter-spacing:.4px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row>*{flex:1 1 auto}
+.row>.auto{flex:0 0 auto}
+.muted{color:var(--mu);font-size:13px}
+.err{color:var(--red);font-size:13px;margin-top:10px;min-height:16px}
+.good{color:var(--g)}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+.b-ok{background:var(--gl);color:var(--g)}
+.b-warn{background:var(--ambl);color:var(--amb)}
+.b-no{background:var(--redl);color:var(--red)}
+.big{font-size:22px;font-weight:800;color:var(--g)}
+.ct{font-weight:800;font-size:14px}
+.bar{height:8px;background:var(--bd);border-radius:999px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--g);border-radius:999px}
+.card{background:#fff;border:1px solid var(--bd);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.card h2{margin:0 0 12px;font-size:16px;color:var(--tx);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.kpi{background:#fff;border:1px solid var(--bd);border-radius:14px;padding:16px;border-top:3px solid var(--g)}
+.kpi b{display:block;font-size:24px;color:var(--g)}
+.kpi span{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.6px}
+.banner{border-radius:12px;padding:14px 16px;margin-bottom:14px;font-weight:600}
+.banner.ok{background:var(--gl);color:var(--g);border:1px solid #c9e3cf}
+.banner.no{background:var(--ambl);color:var(--amb);border:1px solid #f1dd9b}
+.item{border:1px solid var(--bd);border-radius:12px;padding:12px;margin-top:10px;background:#fff}
+.line{padding:10px 0;border-bottom:1px solid var(--bd);font-size:14px}
+.line:last-child{border-bottom:0}
+.crow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.crow:last-child{border-bottom:0}
+.ci{flex:1 1 220px;min-width:0}
+.reply{background:var(--gl);border-radius:10px;padding:10px 12px;margin-top:8px}
+.msgtxt{white-space:pre-wrap;margin-top:6px;font-size:14px}
+.chk{display:flex;align-items:center;gap:10px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:14px;border:1px solid var(--g);border-radius:10px;overflow:hidden}
+.tabs button{border-radius:0;background:#fff;color:var(--g);padding:10px}
+.tabs button.on{background:var(--g);color:#fff}
+.login{max-width:440px;width:100%;margin:36px auto}
+.login .lg{display:flex;justify-content:center;margin-bottom:8px}
+.login .lg img{width:88px;height:88px;border-radius:50%;background:#fff;border:2px solid var(--g);object-fit:cover}
+.shell{display:grid;grid-template-columns:250px minmax(0,1fr);flex:1;min-height:0}
+nav.side{background:#fff;border-right:1px solid var(--bd);padding:14px 10px}
+nav.side .grp{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin:14px 10px 6px}
+nav.side button{display:flex;align-items:center;gap:10px;width:100%;background:transparent;color:var(--tx);border:0;text-align:left;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin:0 0 2px}
+nav.side button:hover{background:var(--bg);filter:none}
+nav.side button.on{background:var(--gl);color:var(--g)}
+nav.side .ic{width:20px;text-align:center}
+main{padding:22px;max-width:1100px;width:100%}
+.page-h{margin-bottom:16px;border-bottom:1px solid var(--bd);padding-bottom:12px}
+.page-h h1{margin:0;font-size:22px;color:var(--g)}
+.page-h p{margin:4px 0 0;color:var(--mu);font-size:13px}
+details.faq{border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-top:8px;background:#fff}
+details.faq summary{cursor:pointer;font-weight:700;color:var(--tx);list-style:none}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary:before{content:"＋ ";color:var(--g);font-weight:800}
+details.faq[open] summary:before{content:"－ "}
+details.faq .ans{margin-top:8px;color:var(--mu);font-size:14px;line-height:1.5}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(140px);background:var(--g);color:#fff;padding:12px 18px;border-radius:12px;transition:transform .3s;z-index:99;font-weight:600;max-width:90vw;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.bad{background:var(--red)}
+footer.foot{background:#fff;border-top:2px solid var(--g);padding:14px;text-align:center;color:var(--mu);font-size:13px;display:flex;align-items:center;justify-content:center;gap:10px}
+footer.foot img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+footer.foot b{color:var(--g)}
+dl.info{display:grid;grid-template-columns:160px minmax(0,1fr);gap:0;margin:0}
+dl.info dt,dl.info dd{padding:11px 0;border-bottom:1px solid var(--bd);margin:0}
+dl.info dt{color:var(--mu);font-size:13px;font-weight:700}
+dl.info dd{font-weight:600}
+@media(max-width:900px){
+  .shell{grid-template-columns:1fr}
+  nav.side{display:flex;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:5}
+  nav.side .grp{display:none}
+  nav.side button{width:auto;white-space:nowrap;margin:0 4px 0 0}
+  main{padding:14px}
+  .two{grid-template-columns:1fr}
+  .hname{display:none}
+  dl.info{grid-template-columns:120px minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <img id="logo" alt="Logo">
+    <div style="min-width:0">
+      <div class="ttl">Portail étudiant IST</div>
+      <div class="sub">Institut La Science Avant Tout</div>
+    </div>
+  </div>
+  <div class="hright">
+    <span class="hname" id="hname"></span>
+    <button class="white" id="logout" hidden>Quitter</button>
+  </div>
+</header>
+
+<!-- CONNEXION / INSCRIPTION -->
+<div id="login" class="login card">
+  <div class="lg"><img id="logo2" alt="Logo"></div>
+  <h2 style="text-align:center;margin:4px 0 2px">Bienvenue à l'Institut</h2>
+  <p class="muted" style="text-align:center;margin:0 0 14px">Accédez à votre espace étudiant</p>
+  <div class="tabs">
+    <button id="tabLog" class="on">Connexion</button>
+    <button id="tabReg">Inscription</button>
+  </div>
+
+  <div id="pLog">
+    <label class="l" for="lNum">Numéro d'admission</label>
+    <input id="lNum" placeholder="IST26-001" autocapitalize="characters" autocomplete="off">
+    <label class="l" for="lL4">4 derniers chiffres de votre téléphone</label>
+    <input id="lL4" inputmode="numeric" maxlength="4" placeholder="1234" autocomplete="off">
+    <div class="err" id="lErr"></div>
+    <button id="lGo" class="full" style="margin-top:14px">Entrer dans mon espace</button>
+  </div>
+
+  <div id="pReg" hidden>
+    <div id="iForm">
+      <label class="l" for="iNom">Nom</label><input id="iNom" autocomplete="family-name">
+      <label class="l" for="iPre">Prénom</label><input id="iPre" autocomplete="given-name">
+      <label class="l" for="iGen">Genre</label>
+      <select id="iGen"><option value="">— Choisir —</option><option>Masculin</option><option>Féminin</option></select>
+      <label class="l" for="iPays">Pays</label><select id="iPays"></select>
+      <label class="l" for="iTel">Téléphone + indicatif</label>
+      <div class="row" style="flex-wrap:nowrap"><span id="iInd" class="auto" style="padding:11px 12px;border:1px solid var(--bd);border-radius:10px;min-width:64px;text-align:center">+</span><input id="iTel" type="tel" inputmode="tel" placeholder="Numéro"></div>
+      <div class="err" id="iErr"></div>
+      <button id="iGo" class="full" style="margin-top:14px">Créer mon dossier</button>
+    </div>
+    <div id="iRes" hidden>
+      <div class="banner ok" style="text-align:center">
+        <div>Inscription réussie ✅</div>
+        <div id="iWho" style="margin-top:6px"></div>
+        <div class="muted" style="margin-top:8px">Votre numéro d'admission</div>
+        <div class="big" id="iNum" style="font-size:26px;letter-spacing:1px"></div>
+        <div class="muted">Conservez-le précieusement.</div>
+      </div>
+      <button id="iEnter" class="full">Accéder à mon espace</button>
+      <div class="err" id="iErr2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ESPACE ÉTUDIANT -->
+<div id="app" class="shell" hidden>
+  <nav class="side">
+    <div class="grp">Mon espace</div>
+    <button data-v="home" class="on"><span class="ic">⌂</span>Accueil</button>
+    <button data-v="profile"><span class="ic">👤</span>Profil</button>
+    <div class="grp">Scolarité</div>
+    <button data-v="presence"><span class="ic">✔</span>Marquer ma présence</button>
+    <button data-v="pay"><span class="ic">💳</span>Mes paiements</button>
+    <button data-v="exam"><span class="ic">🎓</span>Résultat examen</button>
+    <div class="grp">Communication</div>
+    <button data-v="inbox"><span class="ic">📥</span>Boîte de réception</button>
+    <button data-v="assist"><span class="ic">❓</span>Assistance</button>
+  </nav>
+
+  <main>
+
+    <!-- ACCUEIL -->
+    <section id="s-home">
+      <div class="page-h"><h1 id="hello"></h1><p id="helloSub"></p></div>
+      <div id="eligBanner"></div>
+      <div class="kpis" id="kpiHome"></div>
+      <div class="two">
+        <div class="card"><h2>Mes cours</h2><div id="courseHome"></div></div>
+        <div class="card"><h2>Séances en cours</h2><div id="activeHome"></div></div>
+      </div>
+      <div class="card">
+        <h2>Accès rapide</h2>
+        <div class="row">
+          <button class="ghost" data-go="presence">Marquer ma présence</button>
+          <button class="ghost" data-go="pay">Envoyer un paiement</button>
+          <button class="ghost" data-go="inbox">Écrire à l'administration</button>
+          <button class="ghost" data-go="assist">Obtenir de l'aide</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFIL -->
+    <section id="s-profile" hidden>
+      <div class="page-h"><h1>Profil</h1><p>Vos informations d'identité d'étudiant.</p></div>
+      <div class="card"><dl class="info" id="profBox"></dl></div>
+    </section>
+
+    <!-- PRÉSENCE -->
+    <section id="s-presence" hidden>
+      <div class="page-h"><h1>Marquer ma présence</h1><p>Le code se trouve dans le dernier vocal de votre cours. Il est valable jusqu'à l'apparition du code suivant.</p></div>
+      <div class="card">
+        <h2>Saisir mon code</h2>
+        <div id="presNone" class="banner ok" hidden>Votre présence est déjà enregistrée pour toutes les séances en cours ✅</div>
+        <div id="presForm">
+          <label class="l" for="cSel">Cours</label>
+          <select id="cSel"></select>
+          <label class="l" for="cCode">Code</label>
+          <input id="cCode" placeholder="Ex : K7M2" autocapitalize="characters" autocomplete="off">
+          <div class="err" id="cMsg"></div>
+          <button id="cGo" class="full" style="margin-top:14px">Valider ma présence</button>
+        </div>
+      </div>
+      <div class="card"><h2>Séances en cours</h2><div id="presActive"></div></div>
+      <div class="card"><h2>Ma présence par cours</h2><div id="presCourses"></div></div>
+    </section>
+
+    <!-- PAIEMENTS -->
+    <section id="s-pay" hidden>
+      <div class="page-h"><h1>Mes paiements</h1><p>Envoyez votre paiement avec la capture d'écran, puis suivez sa confirmation.</p></div>
+      <div class="kpis"><div class="kpi"><b id="payTot">0</b><span>Total payé (confirmé)</span></div></div>
+      <div class="two">
+        <div class="card">
+          <h2>Envoyer un paiement</h2>
+          <label class="l" for="mMt">Montant envoyé</label>
+          <input id="mMt" type="number" inputmode="decimal" placeholder="Montant">
+          <label class="l" for="mMotif">Motif</label>
+          <input id="mMotif" placeholder="Ex : Inscription, Octobre">
+          <label class="l" for="mMode">Mode de paiement</label>
+          <select id="mMode"><option value="">— Choisir —</option><option>Mobile Money</option><option>Espèces</option><option>Virement</option><option>Autre</option></select>
+          <label class="l" for="mCap">Capture d'écran du message d'envoi</label>
+          <input id="mCap" type="file" accept="image/*">
+          <div class="muted" style="margin-top:4px">Recommandé. Image JPG ou PNG.</div>
+          <label class="l" for="mRef">Référence (facultatif si capture)</label>
+          <input id="mRef" placeholder="Numéro du transfert ou du reçu" autocomplete="off">
+          <div class="err" id="mMsg"></div>
+          <button id="mGo" class="full" style="margin-top:14px">Envoyer mon paiement</button>
+        </div>
+        <div class="card">
+          <h2>Suivi de mes paiements</h2>
+          <div id="payList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXAMENS -->
+    <section id="s-exam" hidden>
+      <div class="page-h"><h1>Résultat examen</h1><p>Vos notes et votre éligibilité à l'examen.</p></div>
+      <div id="examBanner"></div>
+      <div class="card"><h2>Mes notes</h2><div id="examList"></div></div>
+    </section>
+
+    <!-- BOÎTE DE RÉCEPTION -->
+    <section id="s-inbox" hidden>
+      <div class="page-h"><h1>Boîte de réception</h1><p>Écrivez à l'administration de l'institut. Vous recevrez la réponse ici.</p></div>
+      <div class="two">
+        <div class="card">
+          <h2>Nouveau message</h2>
+          <label class="l" for="sujetI">Sujet</label>
+          <input id="sujetI" placeholder="Ex : Demande de justificatif">
+          <label class="l" for="texteI">Message</label>
+          <textarea id="texteI" placeholder="Écrivez votre message…"></textarea>
+          <div class="err" id="iMsg"></div>
+          <button id="iSend" class="full" style="margin-top:12px">Envoyer à l'administration</button>
+        </div>
+        <div class="card">
+          <h2>Mes messages</h2>
+          <div id="msgList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ASSISTANCE -->
+    <section id="s-assist" hidden>
+      <div class="page-h"><h1>Assistance</h1><p>Consultez les questions fréquentes, ou posez la vôtre. Une réponse vous est donnée dans quelques heures.</p></div>
+      <div class="two">
+        <div class="card">
+          <h2>Questions fréquentes</h2>
+          <div id="faq"></div>
+        </div>
+        <div class="card">
+          <h2>Poser une question</h2>
+          <label class="l" for="qTexte">Votre question</label>
+          <textarea id="qTexte" placeholder="Décrivez votre problème ou votre question…"></textarea>
+          <div class="err" id="qMsg"></div>
+          <button id="qSend" class="full" style="margin-top:12px">Envoyer ma question</button>
+          <h2 style="margin-top:20px">Mes questions</h2>
+          <div id="assistHist"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="foot" id="foot" hidden>
+  <img id="logo3" alt="Logo">
+  <span><b>Institut La Science Avant Tout (IST) 2026</b></span>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var LOGO_ID="15xqVwiFLfKtp0SGnKOS2rKnPu2x6jYNp";
+var LOGO="https://drive.google.com/thumbnail?id="+LOGO_ID+"&sz=w300";
+var API="https://script.google.com/macros/s/AKfycbyV4QjghRiDBUXNIpEL36lGrCZpdxcQCxlM5duPNVtiheXpv_qMKDIYKM3OAs_0_ZNZ/exec";
+["logo","logo2","logo3"].forEach(function(i){document.getElementById(i).src=LOGO});
+
+var $=function(i){return document.getElementById(i)};
+var S={num:"",l4:"",d:null,msgs:[]};
+var reg={num:"",l4:""};
+var P=[["Sénégal","+221"],["Mali","+223"],["Côte d'Ivoire","+225"],["Guinée","+224"],["Burkina Faso","+226"],["Niger","+227"],["Togo","+228"],["Bénin","+229"],["Mauritanie","+222"],["Cameroun","+237"],["Tchad","+235"],["Gabon","+241"],["Congo","+242"],["RD Congo","+243"],["Maroc","+212"],["Algérie","+213"],["Tunisie","+216"],["Égypte","+20"],["France","+33"],["Belgique","+32"],["Canada","+1"],["États-Unis","+1"],["Autre","+"]];
+var FAQ=[
+  ["Comment marquer ma présence ?","Ouvrez « Marquer ma présence », choisissez votre cours, puis saisissez le code donné dans le dernier vocal du cours. Chaque cours a un nouveau code la veille de sa séance."],
+  ["Pourquoi mon pourcentage est-il inférieur à 100 % ?","Chaque séance vaut jusqu'à 10 %. Le code saisi dans les 48 h qui suivent la séance rapporte 10 %. Ensuite, la valeur baisse de 1 % par tranche de 24 h. Une séance sans code saisi compte 0 %."],
+  ["Combien de temps ai-je pour saisir le code ?","Le code reste valable jusqu'à l'apparition du code suivant de votre cours, soit environ 6 jours après la séance. Plus vous saisissez tôt, plus vous obtenez de points."],
+  ["Quand suis-je éligible à l'examen ?","Il faut une moyenne de présence de 70 % minimum sur les 5 cours. Les 5 % offerts à tous les élèves sont déjà ajoutés à votre total."],
+  ["Comment envoyer un paiement ?","Ouvrez « Mes paiements », remplissez le formulaire et joignez la capture d'écran du message d'envoi d'argent. L'administration vérifie puis confirme votre paiement. Votre reçu vous est envoyé sur WhatsApp."],
+  ["Mon paiement est « En attente », que faire ?","C'est normal : l'administration le vérifie avant de le confirmer. Si le statut ne change pas après quelques jours, envoyez un message depuis la « Boîte de réception »."],
+  ["Mon code ne fonctionne pas, pourquoi ?","Vérifiez que vous avez choisi le bon cours et que vous avez bien saisi les 4 caractères, lettres et chiffres. Si le code date de plus d'une semaine, il a peut-être été remplacé : demandez le code en cours à l'administration."]
+];
+
+function h(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined&&txt!==null)e.textContent=txt;return e}
+function msg(e){return (e&&e.message)?e.message:"Erreur. Réessayez."}
+function fdate(ds){var p=String(ds||"").split("-");return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:String(ds||"")}
+function toast(t,bad){var x=$("toast");x.textContent=t;x.className="toast show"+(bad?" bad":"");clearTimeout(toast.t);toast.t=setTimeout(function(){x.className="toast"},3800)}
+function saved(){try{return localStorage.getItem("ist_num")||""}catch(e){return ""}}
+function keep(n){try{localStorage.setItem("ist_num",n)}catch(e){}}
+$("lNum").value=saved();
+
+function call(action,data){
+  return fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:action,data:data})})
+  .then(function(r){return r.json()})
+  .then(function(j){
+    if(!j||!j.ok){var e=new Error((j&&j.error)||"Erreur");e.app=true;throw e}
+    return j.data;
+  })
+  .catch(function(e){
+    if(e&&e.app)throw e;
+    throw new Error("Connexion impossible. Vérifiez votre internet et réessayez.");
+  });
+}
+
+/* ----- Navigation ----- */
+var SECTIONS=["home","profile","presence","pay","exam","inbox","assist"];
+function go(v){
+  SECTIONS.forEach(function(k){$("s-"+k).hidden=(k!==v)});
+  document.querySelectorAll("nav.side button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-v")===v)});
+  window.scrollTo(0,0);
+}
+document.querySelectorAll("nav.side button").forEach(function(b){b.onclick=function(){go(b.getAttribute("data-v"))}});
+document.querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){go(b.getAttribute("data-go"))}});
+
+/* ----- Connexion / inscription ----- */
+function showTab(t){
+  $("pLog").hidden=(t!=="log");$("pReg").hidden=(t!=="reg");
+  $("tabLog").classList.toggle("on",t==="log");$("tabReg").classList.toggle("on",t==="reg");
+}
+$("tabLog").onclick=function(){showTab("log")};
+$("tabReg").onclick=function(){showTab("reg")};
+function showApp(on){
+  $("login").hidden=on;$("app").hidden=!on;$("foot").hidden=!on;$("logout").hidden=!on;
+  $("hname").textContent=on&&S.d?S.d.profile.prenom+" "+S.d.profile.nom:"";
+}
+function enter(num,l4,errEl,btn,label){
+  btn.disabled=true;btn.textContent="Connexion…";errEl.textContent="";
+  call("portal",{num:num,last4:l4})
+  .then(function(d){
+    S.num=d.num;S.l4=l4;S.d=d;keep(d.num);
+    showApp(true);renderAll();loadMsgs();go("home");
+  })
+  .catch(function(e){errEl.textContent=msg(e)})
+  .then(function(){btn.disabled=false;btn.textContent=label});
+}
+$("lGo").onclick=function(){
+  var num=$("lNum").value.trim().toUpperCase(),l4=$("lL4").value.trim();
+  if(!num||l4.length!==4){$("lErr").textContent="Entrez votre numéro et les 4 chiffres.";return}
+  enter(num,l4,$("lErr"),$("lGo"),"Entrer dans mon espace");
+};
+$("lL4").onkeydown=function(e){if(e.key==="Enter")$("lGo").click()};
+$("logout").onclick=function(){
+  S={num:"",l4:"",d:null,msgs:[]};$("lL4").value="";
+  showApp(false);showTab("log");go("home");
+};
+
+/* Inscription */
+P.forEach(function(p,i){var o=document.createElement("option");o.value=i;o.textContent=p[0]+" ("+p[1]+")";$("iPays").appendChild(o)});
+function indicatif(){$("iInd").textContent=P[$("iPays").value][1]}
+$("iPays").onchange=indicatif;indicatif();
+$("iGo").onclick=function(){
+  var nom=$("iNom").value.trim(),pre=$("iPre").value.trim(),g=$("iGen").value,tel=$("iTel").value.replace(/[^\d]/g,"");
+  if(!nom||!pre||!g||tel.length<6){$("iErr").textContent="Veuillez remplir tous les champs correctement.";return}
+  $("iErr").textContent="";
+  var b=$("iGo");b.disabled=true;b.textContent="Envoi en cours…";
+  var p=P[$("iPays").value];
+  call("register",{nom:nom,prenom:pre,genre:g,pays:p[0],tel:p[1]+tel})
+  .then(function(num){
+    $("iWho").textContent=pre+" "+nom.toUpperCase();
+    $("iNum").textContent=num;
+    reg={num:num,l4:(p[1]+tel).slice(-4)};
+    keep(num);$("lNum").value=num;
+    $("iForm").hidden=true;$("iRes").hidden=false;
+  })
+  .catch(function(e){$("iErr").textContent=msg(e)})
+  .then(function(){b.disabled=false;b.textContent="Créer mon dossier"});
+};
+$("iEnter").onclick=function(){enter(reg.num,reg.l4,$("iErr2"),$("iEnter"),"Accéder à mon espace")};
+
+/* ----- Données ----- */
+function refreshPortal(){
+  return call("portal",{num:S.num,last4:S.l4})
+  .then(function(d){S.d=d;renderAll();$("hname").textContent=d.profile.prenom+" "+d.profile.nom})
+  .catch(function(e){toast(msg(e),1)});
+}
+function loadMsgs(){
+  return call("messages",{num:S.num,last4:S.l4})
+  .then(function(d){S.msgs=d.items||[];renderInbox();renderAssistHist()})
+  .catch(function(){});
+}
+function renderAll(){
+  if(!S.d)return;
+  renderHome();renderProfile();renderPresence();renderPay();renderExam();
+}
+
+/* ----- Accueil ----- */
+function renderHome(){
+  var d=S.d;
+  $("hello").textContent="Bienvenue, "+d.profile.prenom+" "+d.profile.nom;
+  $("helloSub").textContent="Numéro d'admission : "+d.num;
+
+  var eb=$("eligBanner");eb.innerHTML="";
+  if(d.eligible){
+    eb.appendChild(h("div","banner ok","Vous êtes éligible à l'examen ✅ (moyenne finale : "+d.final+" %)"));
+  }else{
+    var miss=Math.max(0,Math.round((d.passMark-d.final)*10)/10);
+    eb.appendChild(h("div","banner no","Éligibilité : il vous manque "+miss+" % pour atteindre le seuil de "+d.passMark+" %."));
+  }
+
+  var k=$("kpiHome");k.innerHTML="";
+  function kp(v,l){var x=h("div","kpi");x.appendChild(h("b","",v));x.appendChild(h("span","",l));k.appendChild(x)}
+  kp(d.final+" %","Moyenne finale (5 % inclus)");
+  kp(d.avg+" %","Présence avant bonus");
+  kp(d.total+"","Total payé (confirmé)");
+  kp(d.examAvg!==null&&d.examAvg!==undefined?Number(d.examAvg).toFixed(1)+" / 20":"—","Moyenne des examens");
+
+  var c=$("courseHome");c.innerHTML="";
+  d.courses.forEach(function(x){
+    var r=h("div","crow");
+    var l=h("div","ci");
+    l.appendChild(h("div","ct",x.cours));
+    l.appendChild(h("div","muted",x.done+" séance(s) fermée(s) sur "+x.total));
+    r.appendChild(l);
+    r.appendChild(h("div","big",x.pct+" %"));
+    c.appendChild(r);
+    var bw=h("div","bar");var bi=h("i");bi.style.width=Math.min(100,x.pct)+"%";bw.appendChild(bi);c.appendChild(bw);
+  });
+
+  var a=$("activeHome");a.innerHTML="";
+  d.active.forEach(function(x){
+    var r=h("div","line");
+    r.appendChild(h("div","ct",x.cours));
+    r.appendChild(h("div","muted","Séance du "+fdate(x.sessionDate)+" • "+x.label));
+    r.appendChild(h("span","badge "+(x.entered?"b-ok":"b-warn"),x.entered?"Présence enregistrée":"Code à saisir avant le "+x.deadline));
+    a.appendChild(r);
+  });
+}
+
+/* ----- Profil ----- */
+function renderProfile(){
+  var p=S.d.profile,b=$("profBox");b.innerHTML="";
+  [["Numéro d'admission",S.d.num],["Nom",p.nom],["Prénom",p.prenom],["Genre",p.genre],["Pays",p.pays],["Téléphone",p.tel],["Date d'inscription",p.inscrit]].forEach(function(x){
+    b.appendChild(h("dt","",x[0]));
+    b.appendChild(h("dd","",x[1]));
+  });
+}
+
+/* ----- Présence ----- */
+function renderPresence(){
+  var d=S.d;
+  var open=d.active.filter(function(x){return !x.entered});
+  var sel=$("cSel");sel.innerHTML="";
+  open.forEach(function(x){var o=h("option","",x.cours);o.value=x.cours;sel.appendChild(o)});
+  $("presForm").hidden=!open.length;
+  $("presNone").hidden=!!open.length;
+
+  var a=$("presActive");a.innerHTML="";
+  d.active.forEach(function(x){
+    var r=h("div","line");
+    r.appendChild(h("div","ct",x.cours));
+    r.appendChild(h("div","muted","Séance du "+fdate(x.sessionDate)+" • "+x.label+" • valable jusqu'au "+x.deadline));
+    r.appendChild(h("span","badge "+(x.entered?"b-ok":"b-warn"),x.entered?"Enregistrée":"En attente de code"));
+    a.appendChild(r);
+  });
+
+  var c=$("presCourses");c.innerHTML="";
+  d.courses.forEach(function(x){
+    var r=h("div","crow");
+    var l=h("div","ci");
+    l.appendChild(h("div","ct",x.cours));
+    l.appendChild(h("div","muted",x.label+" • "+x.done+" séance(s) fermée(s) sur "+x.total));
+    r.appendChild(l);
+    r.appendChild(h("div","big",x.pct+" %"));
+    c.appendChild(r);
+    var bw=h("div","bar");var bi=h("i");bi.style.width=Math.min(100,x.pct)+"%";bw.appendChild(bi);c.appendChild(bw);
+  });
+}
+$("cGo").onclick=function(){
+  var cours=$("cSel").value,code=$("cCode").value.trim();
+  $("cMsg").className="err";$("cMsg").textContent="";
+  if(!cours||code.length<3){$("cMsg").textContent="Choisissez le cours et saisissez le code.";return}
+  var b=$("cGo");b.disabled=true;b.textContent="Vérification…";
+  call("presence",{num:S.num,last4:S.l4,cours:cours,code:code})
+  .then(function(r){
+    $("cMsg").className="err good";
+    $("cMsg").textContent="Présence enregistrée ✅ — "+cours+" (séance du "+fdate(r.sessionDate)+"), "+r.points+" % obtenus.";
+    $("cCode").value="";
+    toast("Présence enregistrée ✅");
+    refreshPortal();
+  })
+  .catch(function(e){$("cMsg").textContent=msg(e)})
+  .then(function(){b.disabled=false;b.textContent="Valider ma présence"});
+};
+
+/* ----- Paiements ----- */
+function compress(file,cb){
+  var fr=new FileReader();
+  fr.onload=function(){
+    var img=new Image();
+    img.onload=function(){
+      var max=1200,s=Math.min(1,max/Math.max(img.width,img.height));
+      var c=document.createElement("canvas");
+      c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
+      c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+      cb(c.toDataURL("image/jpeg",0.7));
+    };
+    img.onerror=function(){cb(null)};
+    img.src=fr.result;
+  };
+  fr.onerror=function(){cb(null)};
+  fr.readAsDataURL(file);
+}
+function renderPay(){
+  var d=S.d;
+  $("payTot").textContent=d.total+"";
+  var box=$("payList");box.innerHTML="";
+  if(!d.pay.length){box.appendChild(h("div","muted","Aucun paiement pour le moment."));return}
+  d.pay.forEach(function(x){
+    var it=h("div","item");
+    var top=h("div","row");
+    var l=h("div");
+    l.appendChild(h("div","ct",x.montant+" — "+x.mode));
+    l.appendChild(h("div","muted",fdate(x.date)+(x.ref?" • Réf. "+x.ref:"")+(x.recu?" • Reçu "+x.recu:"")));
+    top.appendChild(l);
+    var cls="b-warn",txt="En attente";
+    if(x.statut==="Validé"){cls="b-ok";txt="Confirmé"}
+    else if(x.statut==="Refusé"){cls="b-no";txt="Refusé"}
+    top.appendChild(h("span","badge "+cls,txt));
+    it.appendChild(top);
+    if(x.statut==="Refusé")it.appendChild(h("div","muted","Contactez l'administration via la Boîte de réception."));
+    box.appendChild(it);
+  });
+}
+$("mGo").onclick=function(){
+  var m=$("mMt").value,motif=$("mMotif").value.trim(),mode=$("mMode").value,ref=$("mRef").value.trim(),f=$("mCap").files[0];
+  $("mMsg").className="err";
+  if(!(parseFloat(m)>0)||!mode||(ref.length<3&&!f)){
+    $("mMsg").textContent="Remplissez les champs et ajoutez la capture d'écran ou la référence.";return;
+  }
+  if(f&&f.size>15000000){$("mMsg").textContent="Image trop lourde.";return}
+  $("mMsg").textContent="";
+  var b=$("mGo");b.disabled=true;b.textContent="Envoi en cours…";
+  function reset(){b.disabled=false;b.textContent="Envoyer mon paiement"}
+  function send(img){
+    call("declare",{num:S.num,last4:S.l4,montant:m,motif:motif,mode:mode,ref:ref,img:img})
+    .then(function(){
+      $("mMsg").className="err good";
+      $("mMsg").textContent="Paiement envoyé ✅ L'administration va le confirmer.";
+      ["mMt","mMotif","mRef","mCap"].forEach(function(i){$(i).value=""});$("mMode").value="";
+      refreshPortal();
+    })
+    .catch(function(e){$("mMsg").textContent=msg(e)})
+    .then(reset);
+  }
+  if(f){
+    compress(f,function(url){
+      if(!url){$("mMsg").textContent="Image illisible. Envoyez une capture JPG ou PNG.";reset();return}
+      send(url);
+    });
+  }else send("");
+};
+
+/* ----- Examens ----- */
+function renderExam(){
+  var d=S.d,b=$("examBanner");b.innerHTML="";
+  if(d.eligible){b.appendChild(h("div","banner ok","Vous êtes éligible à l'examen ✅"))}
+  else{
+    var miss=Math.max(0,Math.round((d.passMark-d.final)*10)/10);
+    b.appendChild(h("div","banner no","Pas encore éligible : il vous manque "+miss+" % de présence."));
+  }
+  var l=$("examList");l.innerHTML="";
+  if(!d.exams.length){l.appendChild(h("div","muted","Aucune note enregistrée pour le moment."));return}
+  if(d.examAvg!==null&&d.examAvg!==undefined){
+    l.appendChild(h("div","big","Moyenne : "+Number(d.examAvg).toFixed(1)+" / 20"));
+  }
+  d.exams.slice().reverse().forEach(function(x){
+    l.appendChild(h("div","line",fdate(x.date)+" — "+x.examen+" : "+x.note+" / "+x.sur));
+  });
+}
+
+/* ----- Boîte de réception ----- */
+function msgCard(x){
+  var c=h("div","item");
+  var top=h("div","row");
+  var l=h("div");
+  l.appendChild(h("div","ct",x.sujet));
+  l.appendChild(h("div","muted",fdate(x.date)+" à "+x.heure));
+  top.appendChild(l);
+  top.appendChild(h("span","badge "+(x.reponse?"b-ok":"b-warn"),x.reponse?"Réponse reçue":"En attente de réponse"));
+  c.appendChild(top);
+  c.appendChild(h("div","msgtxt",x.texte));
+  if(x.reponse){
+    var r=h("div","reply");
+    r.appendChild(h("div","muted","Administration de l'IST • "+x.dateRep));
+    r.appendChild(h("div","msgtxt",x.reponse));
+    c.appendChild(r);
+  }
+  return c;
+}
+function renderInbox(){
+  var box=$("msgList");box.innerHTML="";
+  var list=S.msgs.filter(function(x){return x.type==="Message"});
+  if(!list.length){box.appendChild(h("div","muted","Aucun message pour le moment."));return}
+  list.forEach(function(x){box.appendChild(msgCard(x))});
+}
+$("iSend").onclick=function(){
+  var sujet=$("sujetI").value.trim(),texte=$("texteI").value.trim();
+  $("iMsg").className="err";$("iMsg").textContent="";
+  if(texte.length<5){$("iMsg").textContent="Écrivez votre message.";return}
+  var b=$("iSend");b.disabled=true;b.textContent="Envoi…";
+  call("sendMessage",{num:S.num,last4:S.l4,type:"Message",sujet:sujet,texte:texte})
+  .then(function(){
+    $("sujetI").value="";$("texteI").value="";
+    toast("Message envoyé à l'administration ✅");
+    loadMsgs();
+  })
+  .catch(function(e){$("iMsg").textContent=msg(e)})
+  .then(function(){b.disabled=false;b.textContent="Envoyer à l'administration"});
+};
+
+/* ----- Assistance ----- */
+function renderFaq(){
+  var box=$("faq");box.innerHTML="";
+  FAQ.forEach(function(f){
+    var d=document.createElement("details");d.className="faq";
+    d.appendChild(h("summary","",f[0]));
+    d.appendChild(h("div","ans",f[1]));
+    box.appendChild(d);
+  });
+}
+function renderAssistHist(){
+  var box=$("assistHist");box.innerHTML="";
+  var list=S.msgs.filter(function(x){return x.type==="Assistance"});
+  if(!list.length){box.appendChild(h("div","muted","Vous n'avez pas encore posé de question."));return}
+  list.forEach(function(x){box.appendChild(msgCard(x))});
+}
+$("qSend").onclick=function(){
+  var texte=$("qTexte").value.trim();
+  $("qMsg").className="err";$("qMsg").textContent="";
+  if(texte.length<5){$("qMsg").textContent="Écrivez votre question.";return}
+  var b=$("qSend");b.disabled=true;b.textContent="Envoi…";
+  call("sendMessage",{num:S.num,last4:S.l4,type:"Assistance",sujet:"Question",texte:texte})
+  .then(function(){
+    $("qTexte").value="";
+    toast("Question envoyée. Réponse sous quelques heures ✅");
+    loadMsgs();
+  })
+  .catch(function(e){$("qMsg").textContent=msg(e)})
+  .then(function(){b.disabled=false;b.textContent="Envoyer ma question"});
+};
+renderFaq();
+</script>
+</body>
+</html>
